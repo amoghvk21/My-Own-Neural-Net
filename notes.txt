@@ -1,0 +1,34 @@
+netural network class
+takes in a list of numbers
+self.blueprint = [4, 3, 3, 2] (input)
+first element is the number of inputs
+last element is the number of outputs
+the other elements are the number of nodes in each hidden layer
+  2 hidden layers each with 3 nodes
+self.bias = [2, 2, 2]
+weighs[gap, from_node, to_node]
+self.weights = [
+  [[2, 2, 2], [2, 2, 2], [2, 2, 2], [2, 2, 2]],
+  [[2, 2, 2], [2, 2, 2], [2, 2, 2]],
+  [[2, 2], [2, 2], [2, 2]]
+]
+
+init will call the create weight function
+
+create_weights():
+  
+
+weights length == len(blueprint)-1
+i = 0
+j = 1
+for weight in weights
+  weight length == blueprint[i]
+  i++
+  for w in weight
+    w length == blueprint[j] 
+    j++
+
+functions:
+  sigmoid()
+  inverse_sigmoid()
+  activation(list()) = takes in a list of floats or int. list has length of blueprint[0]
