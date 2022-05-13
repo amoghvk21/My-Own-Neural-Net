@@ -6,12 +6,11 @@ last element is the number of outputs
 the other elements are the number of nodes in each hidden layer
   2 hidden layers each with 3 nodes
 self.bias = [2, 2, 2]
-weighs[gap, from_node, to_node]
+weighs[gap, to_node, from_node]
 self.weights = [
-  [[2, 2, 2], [2, 2, 2], [2, 2, 2], [2, 2, 2]],
+  [[2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]],
   [[2, 2, 2], [2, 2, 2], [2, 2, 2]],
-  [[2, 2], [2, 2], [2, 2]]
-]
+  [[2, 2, 2], [2, 2, 2]]]
 
 init will call the create weight function
 

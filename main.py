@@ -1,6 +1,6 @@
 from NeuralNet import NeuralNetwork
 
-raise NotImplementedError("ha")
 
-n = NeuralNetwork(3, 3, 3)
-print(n.getOutput([1, 2, 3]))
+
+n = NeuralNetwork([4, 3, 3, 2])
+print(n.query([1, 2, 3, 4]))
