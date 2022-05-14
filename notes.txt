@@ -5,7 +5,8 @@ first element is the number of inputs
 last element is the number of outputs
 the other elements are the number of nodes in each hidden layer
   2 hidden layers each with 3 nodes
-self.bias = [2, 2, 2]
+self.bias = [[2, 2, 2], [2, 2, 2], [2, 2]]
+  set of biases for each layer excluding the input layer
 weighs[gap, to_node, from_node]
 self.weights = [
   [[2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]],
@@ -31,3 +32,20 @@ functions:
   sigmoid()
   inverse_sigmoid()
   activation(list()) = takes in a list of floats or int. list has length of blueprint[0]
+
+old code:
+  def initialize_net(self):
+      '''
+      - Function that creates the bias and weights matrices in the correct format and structure.
+      - Assigns random real numbers from 0 to 1
+      '''
+      for i in range(len(self.blueprint)-1):
+        self.weights.append([])
+        for j in range(self.blueprint[i+1]):
+          self.weights[i].append([])
+          for k in range(0,self.blueprint[i]):
+            self.weights[i][j].append(random.random())
+
+      self.bias = []
+      for i in range(len(self.blueprint)-1):
+        self.bias.append([n / 100 for n in random.sample(range(1, 100), self.blueprint[i+1])])
