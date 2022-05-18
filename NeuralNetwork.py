@@ -5,7 +5,7 @@ from copy import deepcopy
 
 class ArtificialNeuralNetwork:
   '''
-  Implimentation of an artifical neural network
+  Implimentation of an artifical neural network by Amogh
   '''
   def __init__(self, blueprint):
     self.blueprint = blueprint
@@ -32,6 +32,13 @@ class ArtificialNeuralNetwork:
       bias.append([n / 100 for n in random.sample(range(1, 100), self.blueprint[i+1])])
 
     return weights, bias
+
+
+  @staticmethod
+  def index_2d(myList, v):
+    for i, x in enumerate(myList):
+        if v in x:
+            return (i, x.index(v))
 
 
   @staticmethod
@@ -94,22 +101,63 @@ class ArtificialNeuralNetwork:
       sum += (np.power(np.subtract(self.query(x), y), 2).sum())/len(x)
     return sum
 
+  '''
+  def accuracy(self, x_inputs, y_expected):
+    Return a percentage of how accurate the model was at predicting the x_inputs and how close it was to the y_expected
+    This value not used by the model. More used for the UI for the user as it is easier to understand
+    total = len(x_inputs)
+    wrong = 0
+    for x, y in zip(x_inputs, y_expected):
+      if self.
+  '''
 
-  def update_weights_bias(self):
+
+  def update_bias(self, b):
     '''
-    Will take in old weights and biases and return the new set of weights and biases
+    Update the bias
+    Need to add more parameters...
+    Need to impliment
     '''
-    weight, bias = self.create_weights_bias()
-    pass
+    return b
 
 
-  def train(self, x_values, y_values, l=0.5):
+  def update_weights(self, w):
+    '''
+    Update the weights
+    Need to add more parameters...
+    Need to impliment
+    '''
+    return w
+
+
+  def train(self, x_values, y_values, epoch, l=0.5):
     '''
     Function that is ran by the user to train the network given the:
     - x_values of the dataset
     - y_values of the dataset
     - learning rate: how quickly will the weights and biases change to minimise the cost (default value of 0.5)
+    - New weight = old weight + learnrate*(targ-pred)*inputs
     '''
-    loss = self.loss()
-    self.update_weights_bias(self.weights, self.bias, loss, )
-    pass
+    loss = self.loss(x_values, y_values)
+    new_weights = []
+    new_bias = []
+
+    i = 0
+    while i < epoch:
+      i += 1
+      for x, y in zip(x_values, y_values):
+        pred = self.query(x)
+        for w1, b1 in zip(self.weights, self.bias):
+          new_bias.append([])
+          new_weights.append([])
+          for w2, b2 in zip(w1, b1):
+
+            # b2 is the bias for a neuron
+            b2n = self.update_bias(b2)
+            new_bias[self.index_2d(self.bias, b2)[0]].append(b2n)
+
+            # w2 is a list of all the weights going into a neuron 
+            w2n = self.update_weights(w2)
+            new_weights[self.index_2d(self.weights, w2)[0]].append(w2n)
+
+      print(f"Epoch {i} Complete. Loss: {self.loss(x_values, y_values)}. Accuracy: {None}")
