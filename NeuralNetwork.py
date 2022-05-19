@@ -75,7 +75,7 @@ class ArtificialNeuralNetwork:
           j += 1
         temp = deepcopy(new[-1])
         i += 1
-      self.new = new # debugging
+      self.new = new
       return new[-1]
 
 
@@ -85,21 +85,29 @@ class ArtificialNeuralNetwork:
     It accepts the vector of all the inputs and their corresponding weights going into the nodes as well as the bias of that node
     and computes the dot product, adds the bias and feeds it into the sigmoid function to break linearity
     '''
+  
     return self.sigmoid(np.dot(input_list, weights).sum() + bias)
+
 
 
   def loss(self, x_inputs, y_expected):
     '''
     Will accept a list of x_inputs, y_expected. Return a value of how acurate the neural network is at predicting the given data
-    - Difference from the predicted value and the actual value
-    - Square each answer
-    - Sum the vector
-    - Iterates through whole dataset
+    Use of the mean squared error function for calculating how bad the neural network is at predicting the data in the dataset
+    '''
+
     '''
     sum = 0
     for x, y in zip(x_inputs, y_expected):
       sum += (np.power(np.subtract(self.query(x), y), 2).sum())/len(x)
     return sum
+    '''
+
+    y_prediction = []
+    for x in x_inputs:
+      y_prediction.append(self.query(x))
+    
+    return np.square(np.subtract(y_prediction, y_expected)).mean()
 
   '''
   def accuracy(self, x_inputs, y_expected):
@@ -112,22 +120,22 @@ class ArtificialNeuralNetwork:
   '''
 
 
-  def update_bias(self, b):
+  def update_bias(self, b, l, pred, y):
     '''
     Update the bias
-    Need to add more parameters...
     Need to impliment
+    new bias = old bias + l*(targ-pred)
     '''
-    return b
+    return np.add(b, np.multiply(l, np.subtract(y, pred)))
 
 
-  def update_weights(self, w):
+  def update_weights(self, w, l, pred, y, a1):
     '''
     Update the weights
-    Need to add more parameters...
-    Need to impliment
+    New weight = old weight + learnrate*(targ-pred)*n
     '''
-    return w
+
+    return np.ndarray.tolist(np.add(w, np.multiply(np.multiply(l, np.subtract(y, pred)), a1)))
 
 
   def train(self, x_values, y_values, epoch, l=0.5):
@@ -136,28 +144,34 @@ class ArtificialNeuralNetwork:
     - x_values of the dataset
     - y_values of the dataset
     - learning rate: how quickly will the weights and biases change to minimise the cost (default value of 0.5)
-    - New weight = old weight + learnrate*(targ-pred)*inputs
     '''
-    loss = self.loss(x_values, y_values)
-    new_weights = []
-    new_bias = []
+
+    print(f"Origional loss: {self.loss(x_values, y_values)}")
 
     i = 0
     while i < epoch:
       i += 1
       for x, y in zip(x_values, y_values):
+        new_weights = []
+        new_bias = []
         pred = self.query(x)
-        for w1, b1 in zip(self.weights, self.bias):
+        activations = deepcopy(self.new)
+        activations.insert(0, x)
+        for w1, b1, a1 in zip(self.weights, self.bias, activations):
           new_bias.append([])
           new_weights.append([])
           for w2, b2 in zip(w1, b1):
 
+            # a1 is the list of activations of all the connected nodes to that neuron
             # b2 is the bias for a neuron
-            b2n = self.update_bias(b2)
+            b2n = self.update_bias(b2, l, pred, y)
             new_bias[self.index_2d(self.bias, b2)[0]].append(b2n)
 
             # w2 is a list of all the weights going into a neuron 
-            w2n = self.update_weights(w2)
+            w2n = self.update_weights(w2, l, pred, y, a1)
             new_weights[self.index_2d(self.weights, w2)[0]].append(w2n)
+
+        self.weights = deepcopy(new_weights)
+        self.bias = deepcopy(new_bias)
 
       print(f"Epoch {i} Complete. Loss: {self.loss(x_values, y_values)}. Accuracy: {None}")
