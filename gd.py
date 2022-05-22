@@ -2,6 +2,7 @@ import numpy as np
 
 def nn(x, w):
     """Output function y = x * w"""
+    print(x)
     return x * w
 
 

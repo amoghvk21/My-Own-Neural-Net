@@ -1,5 +1,6 @@
 import random
 import math
+from tkinter.tix import InputOnly
 import numpy as np
 from copy import deepcopy
 
@@ -36,6 +37,9 @@ class ArtificialNeuralNetwork:
 
   @staticmethod
   def index_2d(myList, v):
+    '''
+    Takes in a 2D list and an element in the list and returns a tuple of the 2D index of where the element can be found
+    '''
     for i, x in enumerate(myList):
         if v in x:
             return (i, x.index(v))
@@ -94,13 +98,6 @@ class ArtificialNeuralNetwork:
     '''
     Will accept a list of x_inputs, y_expected. Return a value of how acurate the neural network is at predicting the given data
     Use of the mean squared error function for calculating how bad the neural network is at predicting the data in the dataset
-    '''
-
-    '''
-    sum = 0
-    for x, y in zip(x_inputs, y_expected):
-      sum += (np.power(np.subtract(self.query(x), y), 2).sum())/len(x)
-    return sum
     '''
 
     y_prediction = []
@@ -165,13 +162,14 @@ class ArtificialNeuralNetwork:
             # a1 is the list of activations of all the connected nodes to that neuron
             # b2 is the bias for a neuron
             b2n = self.update_bias(b2, l, pred, y)
-            new_bias[self.index_2d(self.bias, b2)[0]].append(b2n)
+            new_bias[self.index_2d(self.bias, b2)[0]].append(np.ndarray.tolist(b2n))
 
             # w2 is a list of all the weights going into a neuron 
             w2n = self.update_weights(w2, l, pred, y, a1)
             new_weights[self.index_2d(self.weights, w2)[0]].append(w2n)
 
-        self.weights = deepcopy(new_weights)
+
         self.bias = deepcopy(new_bias)
+        self.weights = deepcopy(new_weights)
 
       print(f"Epoch {i} Complete. Loss: {self.loss(x_values, y_values)}. Accuracy: {None}")
