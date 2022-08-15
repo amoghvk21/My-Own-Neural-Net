@@ -70,7 +70,7 @@ class NeuralNetwork:
         y = np.array(y).T
 
         # Print origional loss 
-        print(f'accuracy before traning: {self.accuracy(x, y.T)}')
+        print(f'loss before traning: {self.loss(x, y.T)}')
         
         # Iterate epoch times
         for e in range(1, epoch+1):
@@ -96,15 +96,18 @@ class NeuralNetwork:
             self.b2 = np.subtract(self.b2, (l * self.db2))
 
             # Print loss after this epoch
-            print(f'epoch {e} done. Accurracy: {self.accuracy(x, y)}. Loss: {self.loss(x, y)}')
+            print(f'epoch {e} done. Loss: {self.loss(x, y.T)}')
 
 
-    def accuracy(self, x, y):
-        return 0
+    def loss(self, x, y_expected):
+        # Build Y matrix
+        y_expected = np.array(y_expected).T
 
+        # Make predictions using x and forward prop
+        y_predict = self.forward_prop(x)
 
-    def loss(self, x, y):
-        return 0
+        # Compute mean square error using sum function
+        return (((y_expected-y_predict)**2).sum()) * 1/y_expected.shape[1]
         
 
     @staticmethod

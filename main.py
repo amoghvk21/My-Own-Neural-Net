@@ -1,4 +1,5 @@
 from neuralnet import ArtificialNeuralNetwork
+from neuralnetsimple import NeuralNetwork as NN
 
 
 n = ArtificialNeuralNetwork([2, 10, 2])
