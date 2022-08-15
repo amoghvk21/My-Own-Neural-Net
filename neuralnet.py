@@ -6,7 +6,7 @@ class ArtificialNeuralNetwork:
     Network of any number of layers and number of nodes in each layer
     '''
     
-    def __init__(self, blueprint=[2, 3, 2]):
+    def __init__(self, blueprint):
         self.blueprint = blueprint
 
         self.w = [None]
@@ -21,15 +21,17 @@ class ArtificialNeuralNetwork:
         self.dz = [None] * len(blueprint)       # How much to change the raw number for that layer by
         self.dw = [None] * len(blueprint)       # How much to change the weights for that layer by
         self.db = [None] * len(blueprint)       # How much to change the biases for that layer by
-        
-
-    
-    def accuracy(self, x, y):
-        return 0
 
 
-    def loss(self, x, y):
-        return 0
+    def loss(self, x, y_expected):
+        # Build Y matrix
+        y_expected = np.array(y_expected).T
+
+        # Make predictions using x and forward prop
+        y_predict = self.forward_prop(x)
+
+        # Compute mean square error using sum function
+        return (((y_expected-y_predict)**2).sum()) * 1/y_expected.shape[1]
         
 
     @staticmethod
@@ -93,7 +95,7 @@ class ArtificialNeuralNetwork:
         y = np.array(y).T
 
         # Print origional loss 
-        print(f'accuracy before traning: {self.accuracy(x, y.T)}. loss before training: {self.loss(x, y.T)}')
+        print(f'loss before training: {self.loss(x, y.T)}')
         
         # Iterate epoch times
         for e in range(1, epoch+1):
@@ -129,4 +131,4 @@ class ArtificialNeuralNetwork:
                 self.b[i] = np.subtract(self.b[i], (l * self.db[i]))
 
             # Print loss after this epoch
-            print(f'epoch {e} done. Accurracy: {self.accuracy(x, y)}. Loss: {self.loss(x, y)}')
+            print(f'epoch {e} done. Loss: {self.loss(x, y.T)}')
